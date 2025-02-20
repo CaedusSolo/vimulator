@@ -6,13 +6,35 @@ function App() {
   const [latestCommand, setLatestCommand] = useState("")
   const [cursorRow, setCursorRow] = useState(0)
   const [cursorColumn, setCursorColumn] = useState(0)
-  const keybindings = {
-    "h" : "Left",
-    "j" : "Down",
-    "k" : "Up",
-    "l" : "Right"
-  }
+  const [targetRow, setTargetRow] = useState(0)
+  const [targetColumn, setTargetColumn] = useState(0)
+  const targetCharacter = "X"
 
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCursorVisible(prevState => !prevState)
+    }, 550)
+    return () => clearInterval(interval);
+  }, [])
+
+
+  useEffect(() => {
+    document.addEventListener("keydown", handleKeyDown)
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown)
+    }
+  })
+
+  useEffect(() => {
+    const cursor = document.querySelector(".cursor")
+    if (cursor) {
+      cursor.style.gridRowStart = cursorRow + 1
+      cursor.style.gridColumnStart = cursorColumn + 1
+    }
+  }, [cursorRow, cursorColumn])
+
+
+  // Functions
   function handleKeyDown(e) {
     const key = e.key
     setLatestCommand(key)
@@ -35,55 +57,41 @@ function App() {
 
   }
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCursorVisible(prevState => !prevState)
-    },550)
-    return () => clearInterval(interval);
-  }, [])
-
-
-  useEffect(() => {
-    document.addEventListener("keydown", handleKeyDown)
-    return () => {
-      document.removeEventListener("keydown", handleKeyDown)
-    }
-  })
 
   //  Keybindings functions
   function moveCursorUp() {
-    setCursorRow(prevRow => Math.max(0, prevRow - 1))  
+    setCursorRow(prevRow => Math.max(0, prevRow - 1));
     const cursor = document.querySelector('.cursor');
-    cursor.style.backgroundColor = 'lightcoral'; // Change color
+    cursor.style.backgroundColor = 'lightcoral';
     setTimeout(() => {
-      cursor.style.backgroundColor = 'red'; // Revert color
+      cursor.style.backgroundColor = 'red';
     }, 300);
   }
 
   function moveCursorDown() {
-    setCursorRow(prevRow => prevRow + 1)
+    setCursorRow(prevRow => Math.min(12, prevRow + 1)); // Boundary check added
     const cursor = document.querySelector('.cursor');
-    cursor.style.backgroundColor = 'lightcoral'; // Change color
+    cursor.style.backgroundColor = 'lightcoral';
     setTimeout(() => {
-      cursor.style.backgroundColor = 'red'; // Revert color
+      cursor.style.backgroundColor = 'red';
     }, 300);
   }
 
   function moveCursorLeft() {
-    setCursorColumn(prevColumn => Math.max(0, prevColumn - 1))
+    setCursorColumn(prevColumn => Math.max(0, prevColumn - 1));
     const cursor = document.querySelector('.cursor');
-    cursor.style.backgroundColor = 'lightcoral'; // Change color
+    cursor.style.backgroundColor = 'lightcoral';
     setTimeout(() => {
-      cursor.style.backgroundColor = 'red'; // Revert color
+      cursor.style.backgroundColor = 'red';
     }, 300);
   }
 
   function moveCursorRight() {
-    setCursorColumn(prevColumn => prevColumn + 1)
+    setCursorColumn(prevColumn => Math.min(37, prevColumn + 1)); // Boundary check added
     const cursor = document.querySelector('.cursor');
-    cursor.style.backgroundColor = 'lightcoral'; // Change color
+    cursor.style.backgroundColor = 'lightcoral';
     setTimeout(() => {
-      cursor.style.backgroundColor = 'red'; // Revert color
+      cursor.style.backgroundColor = 'red';
     }, 300);
   }
 
@@ -97,8 +105,16 @@ function App() {
             display: cursorVisible ? "block" : "none",
             gridRowStart: cursorRow + 1,
             gridColumnStart: cursorColumn + 1
-            }}>
+          }}>
             &nbsp;
+          </div>
+          <div className="target"
+            style={{
+              gridRowStart: targetRow + 1,
+              gridColumnStart: targetColumn + 1
+            }}
+          >
+            {targetCharacter}
           </div>
         </div>
       </div>
