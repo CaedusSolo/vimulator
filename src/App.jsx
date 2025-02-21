@@ -3,7 +3,6 @@ import './App.css';
 
 function App() {
   const [cursorVisible, setCursorVisible] = useState(true);
-  const [latestCommand, setLatestCommand] = useState('');
   const [cursorRow, setCursorRow] = useState(0);
   const [cursorColumn, setCursorColumn] = useState(0);
   const [targetRow, setTargetRow] = useState(Math.floor(Math.random() * 12));
@@ -11,7 +10,6 @@ function App() {
 
   useEffect(() => {
     resetChallenge();
-    checkCollision();
     const interval = setInterval(() => {
       setCursorVisible((prevState) => !prevState);
     }, 550);
@@ -51,7 +49,6 @@ function App() {
 
   function handleKeyDown(e) {
     const key = e.key;
-    setLatestCommand(key);
 
     if (key === 'h') {
       moveCursorLeft();
@@ -115,7 +112,8 @@ function App() {
   return (
     <>
       <h1 className="text-center">Vimulator</h1>
-      <h2 className="text-center">Latest Key Press: {latestCommand}</h2>
+      <h1 className="text-center">Get to the X !</h1>
+
       <div className="container">
         <div className="game-board">
           <div
