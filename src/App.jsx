@@ -45,6 +45,10 @@ function App() {
     console.log(`Target Column: ${targetColumn}`)
   }, [targetRow, targetColumn]);
 
+  useEffect(() => {
+    checkCollision();
+  }, [cursorRow, cursorColumn]); 
+
   function handleKeyDown(e) {
     const key = e.key;
     setLatestCommand(key);
@@ -67,7 +71,6 @@ function App() {
     setTimeout(() => {
       cursor.style.backgroundColor = 'red';
     }, 300);
-    checkCollision();
   }
 
   function moveCursorDown() {
@@ -77,7 +80,6 @@ function App() {
     setTimeout(() => {
       cursor.style.backgroundColor = 'red';
     }, 300);
-    checkCollision();
   }
 
   function moveCursorLeft() {
@@ -87,7 +89,6 @@ function App() {
     setTimeout(() => {
       cursor.style.backgroundColor = 'red';
     }, 300);
-    checkCollision();
   }
 
   function moveCursorRight() {
@@ -97,7 +98,6 @@ function App() {
     setTimeout(() => {
       cursor.style.backgroundColor = 'red';
     }, 300);
-    checkCollision();
   }
 
   function checkCollision() {
