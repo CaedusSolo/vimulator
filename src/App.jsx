@@ -1,90 +1,115 @@
-import React, { useState, useEffect } from 'react'
-import './App.css'
+import React, { useState, useEffect } from 'react';
+import './App.css';
 
 function App() {
   const [cursorVisible, setCursorVisible] = useState(true);
-  const [latestCommand, setLatestCommand] = useState("")
-  const [cursorRow, setCursorRow] = useState(0)
-  const [cursorColumn, setCursorColumn] = useState(0)
-  const keybindings = {
-    "h" : "Left",
-    "j" : "Down",
-    "k" : "Up",
-    "l" : "Right"
-  }
+  const [latestCommand, setLatestCommand] = useState('');
+  const [cursorRow, setCursorRow] = useState(0);
+  const [cursorColumn, setCursorColumn] = useState(0);
+  const [targetRow, setTargetRow] = useState(Math.floor(Math.random() * 12));
+  const [targetColumn, setTargetColumn] = useState(Math.floor(Math.random() * 37));
+
+  useEffect(() => {
+    resetChallenge();
+    checkCollision();
+    const interval = setInterval(() => {
+      setCursorVisible((prevState) => !prevState);
+    }, 550);
+    return () => clearInterval(interval);
+  }, []);
+
+  useEffect(() => {
+    document.addEventListener('keydown', handleKeyDown);
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  });
+
+  useEffect(() => {
+    const cursor = document.querySelector('.cursor');
+    if (cursor) {
+      cursor.style.gridRowStart = cursorRow + 1; 
+      cursor.style.gridColumnStart = cursorColumn + 1; 
+    }
+    console.log(`Cursor Row: ${cursorRow}`)
+    console.log(`Cursor Column: ${cursorColumn}`)
+  }, [cursorRow, cursorColumn]);
+
+  useEffect(() => {
+    const target = document.querySelector('.target');
+    if (target) {
+      target.style.gridRowStart = targetRow + 1; 
+      target.style.gridColumnStart = targetColumn + 1; 
+    }
+    console.log(`Target Row: ${targetRow}`)
+    console.log(`Target Column: ${targetColumn}`)
+  }, [targetRow, targetColumn]);
 
   function handleKeyDown(e) {
-    const key = e.key
-    setLatestCommand(key)
+    const key = e.key;
+    setLatestCommand(key);
 
-    if (key == "h") {
-      moveCursorLeft()
+    if (key === 'h') {
+      moveCursorLeft();
+    } else if (key === 'j') {
+      moveCursorDown();
+    } else if (key === 'k') {
+      moveCursorUp();
+    } else if (key === 'l') {
+      moveCursorRight();
     }
-
-    else if (key == "j") {
-      moveCursorDown()
-    }
-
-    else if (key == "k") {
-      moveCursorUp()
-    }
-
-    else if (key == "l") {
-      moveCursorRight()
-    }
-
   }
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCursorVisible(prevState => !prevState)
-    },550)
-    return () => clearInterval(interval);
-  }, [])
-
-
-  useEffect(() => {
-    document.addEventListener("keydown", handleKeyDown)
-    return () => {
-      document.removeEventListener("keydown", handleKeyDown)
-    }
-  })
-
-  //  Keybindings functions
   function moveCursorUp() {
-    setCursorRow(prevRow => Math.max(0, prevRow - 1))  
+    setCursorRow((prevRow) => Math.max(0, prevRow - 1));
     const cursor = document.querySelector('.cursor');
-    cursor.style.backgroundColor = 'lightcoral'; // Change color
+    cursor.style.backgroundColor = 'lightcoral';
     setTimeout(() => {
-      cursor.style.backgroundColor = 'red'; // Revert color
+      cursor.style.backgroundColor = 'red';
     }, 300);
+    checkCollision();
   }
 
   function moveCursorDown() {
-    setCursorRow(prevRow => prevRow + 1)
+    setCursorRow((prevRow) => Math.min(12, prevRow + 1));
     const cursor = document.querySelector('.cursor');
-    cursor.style.backgroundColor = 'lightcoral'; // Change color
+    cursor.style.backgroundColor = 'lightcoral';
     setTimeout(() => {
-      cursor.style.backgroundColor = 'red'; // Revert color
+      cursor.style.backgroundColor = 'red';
     }, 300);
+    checkCollision();
   }
 
   function moveCursorLeft() {
-    setCursorColumn(prevColumn => Math.max(0, prevColumn - 1))
+    setCursorColumn((prevColumn) => Math.max(0, prevColumn - 1));
     const cursor = document.querySelector('.cursor');
-    cursor.style.backgroundColor = 'lightcoral'; // Change color
+    cursor.style.backgroundColor = 'lightcoral';
     setTimeout(() => {
-      cursor.style.backgroundColor = 'red'; // Revert color
+      cursor.style.backgroundColor = 'red';
     }, 300);
+    checkCollision();
   }
 
   function moveCursorRight() {
-    setCursorColumn(prevColumn => prevColumn + 1)
+    setCursorColumn((prevColumn) => Math.min(37, prevColumn + 1));
     const cursor = document.querySelector('.cursor');
-    cursor.style.backgroundColor = 'lightcoral'; // Change color
+    cursor.style.backgroundColor = 'lightcoral';
     setTimeout(() => {
-      cursor.style.backgroundColor = 'red'; // Revert color
+      cursor.style.backgroundColor = 'red';
     }, 300);
+    checkCollision();
+  }
+
+  function checkCollision() {
+    if (cursorRow === targetRow && cursorColumn === targetColumn) {
+      console.log("Collided! Resetting challenge")
+      resetChallenge();
+    }
+  }
+
+  function resetChallenge() {
+    setTargetRow(Math.floor(Math.random() * 12));
+    setTargetColumn(Math.floor(Math.random() * 37));
   }
 
   return (
@@ -93,17 +118,26 @@ function App() {
       <h2 className="text-center">Latest Key Press: {latestCommand}</h2>
       <div className="container">
         <div className="game-board">
-          <div className="cursor" style={{
-            display: cursorVisible ? "block" : "none",
-            gridRowStart: cursorRow + 1,
-            gridColumnStart: cursorColumn + 1
-            }}>
+          <div
+            className="cursor"
+            style={{
+              display: cursorVisible ? 'block' : 'none',
+              gridRowStart: cursorRow + 1,
+              gridColumnStart: cursorColumn + 1,
+            }}
+          >
             &nbsp;
           </div>
+            <i className="fa-solid fa-x target" 
+            style={{
+              gridRowStart: targetRow + 1,
+              gridColumnStart: targetColumn + 1
+            }}
+            ></i>
         </div>
       </div>
     </>
-  )
+  );
 }
 
-export default App
+export default App;
