@@ -31,7 +31,7 @@
     padding: 1em;
     text-align: center;
     display: grid;
-    grid-template-columns: repeat(39, 20px); /* Adjust grid size as needed */
+    grid-template-columns: repeat(38, 20px); 
     grid-template-rows: repeat(13, 40px);
     border: 1px solid black;
 }
@@ -45,10 +45,8 @@
 .target {
     color: aliceblue;
     margin: 0;
-    font-size: 25px;
+    font-size: 20px;
     margin: auto;
     font-weight: bold;
     display: flex;
-    justify-content: start;
-    align-items: start;
 }
