@@ -110,10 +110,9 @@ function GameBoard() {
 
   return (
     <>
-      <h1 className="text-center">Vimulator</h1>
-      <h1 className="text-center">Get to the X !</h1>
+      <h2 className="text-center">Vimulator</h2>
+      <h2 className="text-center">Get to the X !</h2>
 
-      <div className="container">
         <div className="game-board">
           <div
             className="cursor"
@@ -131,7 +130,6 @@ function GameBoard() {
               gridColumnStart: targetColumn + 1
             }}
           ></i>
-        </div>
       </div>
     </>
   )
