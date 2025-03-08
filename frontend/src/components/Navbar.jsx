@@ -19,11 +19,21 @@ function Navbar() {
           className={({ isActive }) =>
             isActive ? `nav-link active` : "nav-link"
           }
-          to="/"
+          to="auth/login"
           end
         >
-          Home
+          Login
         </NavLink>
+        <NavLink
+          className={({ isActive }) =>
+            isActive ? `nav-link active` : "nav-link"
+          }
+          to="auth/sign-up"
+          end
+        >
+         Sign Up 
+        </NavLink>
+        
       </div>
     </nav>
   )
