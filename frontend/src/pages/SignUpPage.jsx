@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { ToastContainer, toast } from 'react-toastify'
+import { isValidEmail, isValidPassword } from '../utils/validationUtils'
 import { signUp } from '../api/authApi'
 import 'react-toastify/dist/ReactToastify.css'
 
@@ -22,50 +23,11 @@ function SignUpPage() {
     setConfirmPassword(e.target.value)
   }
 
-  const isValidEmail = (email) => {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-    if (!emailRegex.test(email)) {
-      toast.error("Invalid email format.", {
-        position: "top-right"
-      })
-      return false
-    }
-    return emailRegex.test(email)
-  }
-
-  const isValidPassword = (password) => {
-    if (password.length < 8) {
-        toast.error('Password must be at least 8 characters long.', { position: 'top-center' });
-        return false;
-    }
-
-    if (!/[A-Z]/.test(password)) {
-        toast.error('Password must contain at least one uppercase letter.', { position: 'top-center' });
-        return false;
-    }
-
-    if (!/[a-z]/.test(password)) {
-        toast.error('Password must contain at least one lowercase letter.', { position: 'top-center' });
-        return false;
-    }
-
-    if (!/[0-9]/.test(password)) {
-        toast.error('Password must contain at least one digit.', { position: 'top-center' });
-        return false;
-    }
-
-    if (!/[!@#$%^&*(),.?":{}|<>]/.test(password)) {
-        toast.error('Password must contain at least one special character.', { position: 'top-center' });
-        return false;
-    }
-
-    return true;
-};
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
-    const emailValid = isValidEmail(email);
-    const passwordValid = isValidPassword(password);
+    const emailValid = isValidEmail(email, toast);
+    const passwordValid = isValidPassword(password, toast);
 
     if (!emailValid || !passwordValid) return;
 
@@ -73,6 +35,10 @@ function SignUpPage() {
         toast.error('Passwords do not match.', { position: 'top-center' });
         return;
     }
+
+    toast.success("Account successfully created!", {
+      position: "top-center"
+    })
   }
 
   return (
