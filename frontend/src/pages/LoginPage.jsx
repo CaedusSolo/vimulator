@@ -9,7 +9,7 @@ function LoginPage() {
 
   return (
     <div className="content-container mx-auto w-75">
-      <h2 className="text-center mb-4">Login</h2>
+      <h2 className="text-center mt-4 mb-4">Login</h2>
       <form onSubmit={handleFormSubmit}>
         <div className="form-group mb-2">
           <label htmlFor="email" className="form-label">Email address</label>
