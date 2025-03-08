@@ -24,7 +24,7 @@ function SignUpPage() {
   }
 
 
-  const handleFormSubmit = (e) => {
+  const handleFormSubmit = async (e) => {
     e.preventDefault();
     const emailValid = isValidEmail(email, toast);
     const passwordValid = isValidPassword(password, toast);
@@ -39,6 +39,18 @@ function SignUpPage() {
     toast.success("Account successfully created!", {
       position: "top-center"
     })
+
+    const response = await signUp(email, password)
+    if (response == "Success") {
+      toast.success("Sign Up Successful!", {
+        position: "top-center"
+      })
+    }
+    else {
+      toast.error("Error", {
+        position: "top-center"
+      })
+    }
   }
 
   return (

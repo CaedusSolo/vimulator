@@ -1,4 +1,7 @@
 import React, { useState } from 'react'
+import { ToastContainer, toast } from 'react-toastify'
+import { login } from '../api/authApi'
+import 'react-toastify/dist/ReactToastify.css'
 
 function LoginPage() {
   const [email, setEmail] = useState('')
@@ -7,12 +10,27 @@ function LoginPage() {
   const handleEmailChange = (e) => setEmail(e.target.value)
   const handlePasswordChange = (e) => setPassword(e.target.value)
 
-  const handleFormSubmit = (e) => {
+  const handleFormSubmit = async (e) => {
     e.preventDefault()
+    console.log(`email: ${email}`)
+    console.log(`password: ${password}`)
+
+    const response = await login(email, password)
+    if (response == "Success") {
+      toast.success("Sign Up Successful!", {
+        position: "top-center"
+      })
+    }
+    else {
+      toast.error("Error", {
+        position: "top-center"
+      })
+    }
   }
 
   return (
     <div className="content-container mx-auto w-75">
+      <ToastContainer />
       <h2 className="text-center mt-4 mb-4">Login</h2>
       <form onSubmit={handleFormSubmit}>
         <div className="form-group mb-2">
