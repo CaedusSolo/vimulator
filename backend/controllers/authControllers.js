@@ -22,7 +22,10 @@ const signUp = async (req, res) => {
 
   const { data, error } = await supabase.auth.signUp({
     email: email,
-    password: password
+    password: password,
+    options: {
+      emailRedirectTo: "http://localhost:5173/auth/login"
+    }
   })
 
   if (data) {

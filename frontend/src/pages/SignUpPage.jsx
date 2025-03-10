@@ -38,7 +38,7 @@ function SignUpPage() {
 
     const response = await signUp(email, password)
     if (response == "Success") {
-      toast.success("Sign Up Successful!", {
+      toast.success(`Signed Up Successfully! Please check ${email} to confirm your account.`, {
         position: "top-center"
       })
     }

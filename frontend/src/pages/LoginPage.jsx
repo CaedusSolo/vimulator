@@ -2,9 +2,11 @@ import React, { useState } from 'react'
 import { ToastContainer, toast } from 'react-toastify'
 import { login } from '../api/authApi.js'
 import { isValidEmail } from '../utils/validationUtils'
+import { useNavigate } from 'react-router-dom'
 import 'react-toastify/dist/ReactToastify.css'
 
 function LoginPage() {
+  const navigate = useNavigate()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
 
@@ -29,6 +31,7 @@ function LoginPage() {
       toast.success("Login Successful!", {
         position: "top-center"
       });
+      navigate("/")
     } else {
       console.log("Error condition met");
       toast.error("Invalid credentials. Please try again.", {
