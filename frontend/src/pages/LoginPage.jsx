@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { ToastContainer, toast } from 'react-toastify'
-import { login } from '../api/authApi'
+import { login } from '../api/authApi.js'
+import { isValidEmail } from '../utils/validationUtils'
 import 'react-toastify/dist/ReactToastify.css'
 
 function LoginPage() {
@@ -12,19 +13,40 @@ function LoginPage() {
 
   const handleFormSubmit = async (e) => {
     e.preventDefault()
-    console.log(`email: ${email}`)
-    console.log(`password: ${password}`)
-
-    const response = await login(email, password)
-    if (response == "Success") {
-      toast.success("Sign Up Successful!", {
-        position: "top-center"
-      })
+    
+    // Add validation similar to SignUpPage
+    const emailValid = isValidEmail(email, toast);
+    if (!emailValid) return;
+    
+    if (!password || password.length < 8) {
+      toast.error('Please enter a valid password (minimum 8 characters).', { position: 'top-center' });
+      return;
     }
-    else {
-      toast.error("Error", {
+
+    try {
+      // Show loading toast
+      toast.info("Logging in...", {
         position: "top-center"
-      })
+      });
+      
+      const response = await login(email, password);
+      
+      if (response === "Success") {
+        console.log("Success condition met");
+        toast.success("Login Successful!", {
+          position: "top-center"
+        });
+      } else {
+        console.log("Error condition met");
+        toast.error("Invalid credentials. Please try again.", {
+          position: "top-center"
+        });
+      }
+    } catch (error) {
+      console.error("Login error:", error);
+      toast.error("An error occurred while logging in. Please try again later.", {
+        position: "top-center"
+      });
     }
   }
 

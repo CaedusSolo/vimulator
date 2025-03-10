@@ -11,7 +11,7 @@ async function login(email, password) {
     return "Success"
   }
   catch (error) {
-    return error
+    return "Failed" 
   }
 }
 

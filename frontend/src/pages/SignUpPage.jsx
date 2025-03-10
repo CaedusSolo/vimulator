@@ -36,10 +36,6 @@ function SignUpPage() {
         return;
     }
 
-    toast.success("Account successfully created!", {
-      position: "top-center"
-    })
-
     const response = await signUp(email, password)
     if (response == "Success") {
       toast.success("Sign Up Successful!", {
