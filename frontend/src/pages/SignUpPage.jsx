@@ -37,13 +37,17 @@ function SignUpPage() {
     }
 
     const response = await signUp(email, password)
-    if (response == "Success") {
+    if (response && response.message == "User created successfully") {
       toast.success(`Signed Up Successfully! Please check ${email} to confirm your account.`, {
+        position: "top-center"
+      })
+    } else if (response && response.error) {
+      toast.error(response.error, {
         position: "top-center"
       })
     }
     else {
-      toast.error("Error", {
+      toast.error("An unknown error occurred. Please try again.", {
         position: "top-center"
       })
     }

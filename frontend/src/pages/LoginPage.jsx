@@ -26,15 +26,18 @@ function LoginPage() {
 
     const response = await login(email, password);
 
-    if (response === "Success") {
-      console.log("Success condition met");
+    if (response && response.message == "Login successful") {
       toast.success("Login Successful!", {
         position: "top-center"
       });
       navigate("/")
-    } else {
-      console.log("Error condition met");
-      toast.error("Invalid credentials. Please try again.", {
+    } else if (response && response.error) {
+      toast.error(response.error, {
+        position: "top-center"
+      })
+    }
+    else {
+      toast.error("An unknown error occurred. Please try again.", {
         position: "top-center"
       });
     }
