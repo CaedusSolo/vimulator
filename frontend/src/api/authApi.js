@@ -8,10 +8,10 @@ async function login(email, password) {
       email: email,
       password: password
     })
-    return "Success"
+    return response.data
   }
   catch (error) {
-    return error
+    return error.response.data
   }
 }
 
@@ -21,14 +21,12 @@ async function signUp(email, password) {
       email: email,
       password: password
     })
-    return "Success"
+    return response.data
   }
   catch (error) {
-    return error
+    return error.response.data
   }
 }
 
-async function resetPassword(email, password, newPassword) {
-}
 
-export { login, signUp, resetPassword }
+export { login, signUp }

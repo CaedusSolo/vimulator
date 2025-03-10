@@ -1,9 +1,12 @@
 import React, { useState } from 'react'
 import { ToastContainer, toast } from 'react-toastify'
-import { login } from '../api/authApi'
+import { login } from '../api/authApi.js'
+import { isValidEmail } from '../utils/validationUtils'
+import { useNavigate } from 'react-router-dom'
 import 'react-toastify/dist/ReactToastify.css'
 
 function LoginPage() {
+  const navigate = useNavigate()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
 
@@ -12,20 +15,34 @@ function LoginPage() {
 
   const handleFormSubmit = async (e) => {
     e.preventDefault()
-    console.log(`email: ${email}`)
-    console.log(`password: ${password}`)
 
-    const response = await login(email, password)
-    if (response == "Success") {
-      toast.success("Sign Up Successful!", {
+    const emailValid = isValidEmail(email, toast);
+    if (!emailValid) return;
+
+    if (!password || password.length < 8) {
+      toast.error('Please enter a valid password (minimum 8 characters).', { position: 'top-center' });
+      return;
+    }
+
+    const response = await login(email, password);
+
+    if (response && response.message == "Login successful") {
+      toast.success("Login Successful!", {
+        position: "top-center"
+      });
+      navigate("/")
+    } else if (response && response.error) {
+      toast.error(response.error, {
         position: "top-center"
       })
     }
     else {
-      toast.error("Error", {
+      toast.error("An unknown error occurred. Please try again.", {
         position: "top-center"
-      })
+      });
     }
+    setEmail("")
+    setPassword("")
   }
 
   return (
