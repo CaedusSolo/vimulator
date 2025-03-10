@@ -13,41 +13,30 @@ function LoginPage() {
 
   const handleFormSubmit = async (e) => {
     e.preventDefault()
-    
-    // Add validation similar to SignUpPage
+
     const emailValid = isValidEmail(email, toast);
     if (!emailValid) return;
-    
+
     if (!password || password.length < 8) {
       toast.error('Please enter a valid password (minimum 8 characters).', { position: 'top-center' });
       return;
     }
 
-    try {
-      // Show loading toast
-      toast.info("Logging in...", {
+    const response = await login(email, password);
+
+    if (response === "Success") {
+      console.log("Success condition met");
+      toast.success("Login Successful!", {
         position: "top-center"
       });
-      
-      const response = await login(email, password);
-      
-      if (response === "Success") {
-        console.log("Success condition met");
-        toast.success("Login Successful!", {
-          position: "top-center"
-        });
-      } else {
-        console.log("Error condition met");
-        toast.error("Invalid credentials. Please try again.", {
-          position: "top-center"
-        });
-      }
-    } catch (error) {
-      console.error("Login error:", error);
-      toast.error("An error occurred while logging in. Please try again later.", {
+    } else {
+      console.log("Error condition met");
+      toast.error("Invalid credentials. Please try again.", {
         position: "top-center"
       });
     }
+    setEmail("")
+    setPassword("")
   }
 
   return (

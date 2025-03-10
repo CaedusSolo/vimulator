@@ -47,6 +47,9 @@ function SignUpPage() {
         position: "top-center"
       })
     }
+    setEmail("")
+    setPassword("")
+    setConfirmPassword("")
   }
 
   return (
