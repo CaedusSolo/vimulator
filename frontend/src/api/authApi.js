@@ -28,5 +28,30 @@ async function signUp(email, password) {
   }
 }
 
+async function getUser() {
+  try {
+    const response = await axios.get(`${API_BASE_URL}/get-user`)
+    return response.data
+  }
+  catch (error) {
+    return {
+      user: null,
+      error: error.response.data
+    }
+  }
+}
 
-export { login, signUp }
+async function logout() {
+  try {
+    const response = await axios.post(`${API_BASE_URL}/logout`)
+    return response.data
+  }
+  catch (error) {
+    return {
+      error: error.response.data
+    }
+  }
+}
+
+
+export { login, signUp, getUser, logout }

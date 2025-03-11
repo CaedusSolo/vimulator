@@ -6,6 +6,8 @@ import AppLayout from "./components/AppLayout"
 import LoginPage from './pages/LoginPage';
 import SignUpPage from './pages/SignUpPage';
 import LandingPage from './pages/LandingPage';
+import ProtectedRoute from './components/ProtectedRoute';
+import LogoutPage from "./pages/LogoutPage"
 
 function App() {
   return (
@@ -13,10 +15,16 @@ function App() {
       <Routes>
         <Route path="/" element={<AppLayout />}>
           <Route index element={<LandingPage />} />
-          <Route path="game" element={<GameBoard />} />
+          <Route path="game" element={
+            <ProtectedRoute>
+              <GameBoard />
+            </ProtectedRoute>
+          } 
+          />
           <Route path="auth">
             <Route path="login" element={<LoginPage />} />
             <Route path="sign-up" element={<SignUpPage />} />
+            <Route path="logout" element={<LogoutPage />} />
           </Route>
         </Route>
       </Routes>
