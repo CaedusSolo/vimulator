@@ -9,7 +9,7 @@ function ProtectedRoute({ children }) {
   useEffect(() => {
     const getAuthState = async () => {
       const response = await getUser()
-      setAuthenticated(!!response)
+      setAuthenticated(response && response.user)
       setLoading(false)
     }
     getAuthState()
@@ -23,7 +23,7 @@ function ProtectedRoute({ children }) {
       return <>{children}</>
     }
     else {
-      return <Navigate to="login"></Navigate>
+      return <Navigate to="auth/login"></Navigate>
     }
   }
 }

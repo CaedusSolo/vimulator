@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { NavLink } from 'react-router-dom'
 import { getUser } from '../api/authApi.js'
 
+
 function Navbar() {
   const [isAuthenticated, setIsAuthenticated] = useState(false)
   const [loading, setLoading] = useState(true)
@@ -9,7 +10,7 @@ function Navbar() {
   useEffect(() => {
     const checkAuth = async () => {
       const response = await getUser()
-      setIsAuthenticated(!!response)
+      setIsAuthenticated(response && response.user)
       setLoading(false)
     }
     checkAuth()
