@@ -7,6 +7,7 @@ import LoginPage from './pages/LoginPage';
 import SignUpPage from './pages/SignUpPage';
 import LandingPage from './pages/LandingPage';
 import ProtectedRoute from './components/ProtectedRoute';
+import LogoutPage from "./pages/LogoutPage"
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
           <Route path="auth">
             <Route path="login" element={<LoginPage />} />
             <Route path="sign-up" element={<SignUpPage />} />
+            <Route path="logout" element={<LogoutPage />} />
           </Route>
         </Route>
       </Routes>

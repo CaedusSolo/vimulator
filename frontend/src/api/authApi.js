@@ -41,5 +41,17 @@ async function getUser() {
   }
 }
 
+async function logout() {
+  try {
+    const response = await axios.post(`${API_BASE_URL}/logout`)
+    return response.data
+  }
+  catch (error) {
+    return {
+      error: error.response.data
+    }
+  }
+}
 
-export { login, signUp, getUser }
+
+export { login, signUp, getUser, logout }

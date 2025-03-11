@@ -55,6 +55,23 @@ const signUp = async (req, res) => {
   }
 }
 
+const logout = async (req, res) => {
+  try {
+    const { error } = await supabase.auth.signOut({
+      scope: "global"
+    })
+
+    if (error) {
+      return res.status(400).json({ error: error.message })
+    }
+
+    return res.status(200).json({ message: "Sign out successful" })
+  }
+  catch (error) {
+    return res.status(500).json({ error: "Internal Serval Error" })
+  }
+}
+
 
 const getUser = async (req, res) => {
   try {
@@ -70,4 +87,4 @@ const getUser = async (req, res) => {
   }
 }
 
-export { login, signUp, getUser }
+export { login, signUp, getUser, logout }
