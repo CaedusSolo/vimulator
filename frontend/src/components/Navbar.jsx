@@ -59,7 +59,6 @@ function Navbar() {
             end
           >Log Out</NavLink>
         }
-
       </div>
     </nav>
   )

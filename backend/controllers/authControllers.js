@@ -72,19 +72,29 @@ const logout = async (req, res) => {
   }
 }
 
-
 const getUser = async (req, res) => {
   try {
-    const { data: { user }, error } = await supabase.auth.getUser()
+    const {
+      data: { user },
+      error,
+    } = await supabase.auth.getUser();
 
-    if (!data.user || error) {
-      return res.status(401).json({ error: "Invalid token" })
+    if (error) {
+      if (error.name === "AuthSessionMissingError") {
+        return res.status(403).json({ error: "User not authenticated" })
+      }
+      return res.status(401).json({ error: "Invalid or expired token" });
     }
-    return res.status(200).json({ user })
+
+    if (!user) {
+      return res.status(403).json({ error: "User not authenticated" });
+    }
+
+    return res.status(200).json({ user });
+  } catch (error) {
+    console.error("Server getUser error:", error);
+    return res.status(500).json({ error: "Internal Server Error" });
   }
-  catch (error) {
-    return res.status(500).json({ error: "Internal Server Error" })
-  }
-}
+};
 
 export { login, signUp, getUser, logout }
