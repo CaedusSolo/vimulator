@@ -30,6 +30,7 @@ function LoginPage() {
       toast.success("Login Successful!", {
         position: "top-center"
       });
+      location.reload()
       navigate("/")
     } else if (response && response.error) {
       toast.error(response.error, {

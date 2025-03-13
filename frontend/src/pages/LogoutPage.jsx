@@ -9,6 +9,7 @@ function LogoutPage() {
     const handleLogout = async () => {
       const response = await logout()
       if (response && response.message == "Sign out successful") {
+        location.reload()
         navigate("/auth/login")
       }
     }
