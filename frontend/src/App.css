@@ -34,8 +34,8 @@
   padding: 1em;
   text-align: center;
   display: grid;
-  grid-template-columns: repeat(38, 20px);
-  grid-template-rows: repeat(13, 40px);
+  grid-template-columns: repeat(38, 18.75px);
+  grid-template-rows: repeat(13, 35px);
 }
 
 .cursor {
@@ -76,10 +76,26 @@
   text-decoration: underline;
 }
 
+@media screen and (max-width: 800px) {
+  .game-board {
+    grid-template-columns: repeat(38, 11.25px);
+    width: 90%;
+  }
+}
+
 @media screen and (max-width: 600px) {
   .game-board {
-    grid-template-rows: repeat(13, 40px);
-    grid-template-columns: repeat(38, 11.5px);
+    grid-template-columns: repeat(38, 9.5px);
+    width: 85%;
+  }
+}
+
+@media screen and (max-width: 500px) {
+  .game-board {
+    width: 80%;
+    height: 70%;
+    grid-template-rows: repeat(13, 30px);
+    grid-template-columns: repeat(38, 9px);
   }
 }
 

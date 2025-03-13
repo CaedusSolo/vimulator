@@ -17,7 +17,7 @@ function Navbar() {
   }, [])
 
   if (loading) {
-    return <h2>Loading...</h2>
+    return <h2 className="text-center mx-auto d-flex justify-content-center">Loading...</h2>
   }
 
   return (
