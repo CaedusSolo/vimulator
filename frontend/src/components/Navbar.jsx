@@ -32,24 +32,38 @@ function Navbar() {
         >
           Home
         </NavLink>
-        <NavLink
-          className={({ isActive }) =>
-            isActive ? `nav-link active` : "nav-link"
-          }
-          to="auth/login"
-          end
-        >
-          Login
-        </NavLink>
-        <NavLink
-          className={({ isActive }) =>
-            isActive ? `nav-link active` : "nav-link"
-          }
-          to="auth/sign-up"
-          end
-        >
-          Sign Up
-        </NavLink>
+        {
+          !isAuthenticated &&
+          <NavLink
+            className={({ isActive }) =>
+              isActive ? `nav-link active` : "nav-link"
+            }
+            to="auth/login"
+            end
+          >
+            Login
+          </NavLink>
+        }
+        {
+          !isAuthenticated &&
+          <NavLink
+            className={({ isActive }) =>
+              isActive ? `nav-link active` : "nav-link"
+            }
+            to="auth/sign-up"
+            end
+          >
+            Sign Up
+          </NavLink>
+        }
+        {
+          isAuthenticated &&
+          <NavLink className={({ isActive }) =>
+            isActive ? "nav-link active" : "nav-link"}
+            to="game"
+            end
+          >Game</NavLink>
+        }
         {
           isAuthenticated &&
           <NavLink className={({ isActive }) =>

@@ -1,56 +1,56 @@
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: "Ubuntu Mono", sans-serif;
-    user-select: none;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Ubuntu Mono", sans-serif;
+  user-select: none;
 }
 
 #root {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    width: 100vw;
-    height: 100vh;
-    background-color: green;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100vw;
+  height: 100vh;
+  background-color: green;
 }
 
 .container {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    gap: 0.3em;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3em;
 }
 
 .game-board {
-    background-color: black;
-    width: 100%;
-    height: 70%;
-    max-width: 800px;
-    max-height: 800px;
-    margin: 0 auto;
-    padding: 1em;
-    text-align: center;
-    display: grid;
-    grid-template-columns: repeat(38, 20px); 
-    grid-template-rows: repeat(13, 40px);
+  background-color: black;
+  width: 100%;
+  height: 70%;
+  max-width: 800px;
+  max-height: 800px;
+  margin: 0 auto;
+  padding: 1em;
+  text-align: center;
+  display: grid;
+  grid-template-columns: repeat(38, 20px);
+  grid-template-rows: repeat(13, 40px);
 }
 
 .cursor {
-    width: 20px;
-    height: 40px;
-    background-color: red;
+  width: 20px;
+  height: 40px;
+  background-color: red;
 }
 
 .target {
-    color: aliceblue;
-    margin: 0;
-    font-size: 20px;
-    margin: auto;
-    font-weight: bold;
-    display: flex;
+  color: aliceblue;
+  margin: 0;
+  font-size: 20px;
+  margin: auto;
+  font-weight: bold;
+  display: flex;
 }
 
 .navbar {
@@ -77,8 +77,25 @@
 }
 
 @media screen and (max-width: 600px) {
-    .game-board {
-        grid-template-rows: repeat(13, 40px);
-        grid-template-columns: repeat(38, 11.5px);
-    }
+  .game-board {
+    grid-template-rows: repeat(13, 40px);
+    grid-template-columns: repeat(38, 11.5px);
+  }
+}
+
+
+@media screen and (min-width: 950px) {
+  .container {
+    margin-left: auto;
+    margin-right: auto;
+    width: 65%;
+  }
+}
+
+@media screen and (min-width: 1200px) {
+  .container{
+    margin-left: auto;
+    margin-right: auto;
+    width: 50%;
+  }
 }

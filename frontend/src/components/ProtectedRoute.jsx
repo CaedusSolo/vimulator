@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react'
-import { Navigate } from 'react-router-dom'
+import { Navigate, useNavigate } from 'react-router-dom'
 import { getUser } from '../api/authApi.js'
 
 function ProtectedRoute({ children }) {
   const [loading, setLoading] = useState(true)
   const [authenticated, setAuthenticated] = useState(false)
+  const navigate = useNavigate()
 
   useEffect(() => {
     const getAuthState = async () => {
@@ -23,7 +24,7 @@ function ProtectedRoute({ children }) {
       return <>{children}</>
     }
     else {
-      return <Navigate to="auth/login"></Navigate>
+      return navigate("/auth/login")
     }
   }
 }
