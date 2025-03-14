@@ -24,6 +24,19 @@
   gap: 0.3em;
 }
 
+.content-container {
+  margin-top: auto;
+  margin-bottom: auto;
+}
+
+.landing-page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 3em;
+}
+
 .game-board {
   background-color: black;
   width: 100%;
@@ -67,6 +80,17 @@
   max-width: 100%;
 }
 
+.footer {
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-top: 1em;
+  margin-top: auto;
+  max-width: 100%;
+  font-size: 1.1rem;
+}
+
 .links-container {
   display: flex;
   justify-content: space-between;
@@ -78,11 +102,36 @@
 
 .nav-link {
   font-size: clamp(1rem, 1.5vw, 1.2rem); /* Responsive font size */
-  color: blue;
+  color: black;
+  font-size: 1.3rem;
 }
 
 .nav-link.active {
   text-decoration: underline;
+}
+
+.link {
+  color: gainsboro;
+  text-decoration: none;
+}
+
+.btn-container {
+  display: flex;
+  gap: 5em;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-container .btn {
+  background-color: #0D4DB4;
+  font-size: 1.2rem;
+  padding: 0.5em 1em;
+  width: 100%;
+}
+
+.btn-container .btn:hover {
+  border: 1px solid #0D4DB4;
+  background-color: #1061E5;
 }
 
 /* More logical breakpoints with better scaling */

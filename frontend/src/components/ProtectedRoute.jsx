@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react'
-import { Navigate, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { getUser } from '../api/authApi.js'
+import { toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 
 function ProtectedRoute({ children }) {
   const [loading, setLoading] = useState(true)
@@ -16,6 +18,16 @@ function ProtectedRoute({ children }) {
     getAuthState()
   }, [])
 
+  useEffect(() => {
+    if (!loading && !authenticated) {
+      toast.info('Please login to continue', {
+        position: 'top-center',
+        pauseOnHover: true
+      })      
+      navigate("/auth/login")
+    }
+  }, [loading, authenticated, navigate])
+
   if (loading) {
     return <div>Loading...</div>
   }
@@ -24,7 +36,7 @@ function ProtectedRoute({ children }) {
       return <>{children}</>
     }
     else {
-      return navigate("/auth/login")
+      return null
     }
   }
 }

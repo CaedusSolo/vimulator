@@ -8,10 +8,14 @@ import SignUpPage from './pages/SignUpPage';
 import LandingPage from './pages/LandingPage';
 import ProtectedRoute from './components/ProtectedRoute';
 import LogoutPage from "./pages/LogoutPage"
+import { ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
+import Leaderboard from './pages/Leaderboard';
 
 function App() {
   return (
     <BrowserRouter>
+      <ToastContainer />
       <Routes>
         <Route path="/" element={<AppLayout />}>
           <Route index element={<LandingPage />} />
@@ -19,7 +23,13 @@ function App() {
             <ProtectedRoute>
               <GameBoard />
             </ProtectedRoute>
-          } 
+          }
+          />
+          <Route path="leaderboard" element={
+            <ProtectedRoute>
+              <Leaderboard />
+            </ProtectedRoute>
+          }
           />
           <Route path="auth">
             <Route path="login" element={<LoginPage />} />

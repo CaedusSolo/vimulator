@@ -51,12 +51,12 @@ function LoginPage() {
       <ToastContainer />
       <h2 className="text-center mt-4 mb-4">Login</h2>
       <form onSubmit={handleFormSubmit}>
-        <div className="form-group mb-2">
+        <div className="form-group mb-4">
           <label htmlFor="email" className="form-label">Email address</label>
           <input type="email" className="form-control" id="email" value={email} onChange={handleEmailChange} />
         </div>
 
-        <div className="form-group mb-2">
+        <div className="form-group mb-4">
           <label htmlFor="password" className="form-label">Password</label>
           <input className="form-control" type="password" name="password" id="password" minLength={8} value={password} onChange={handlePasswordChange} />
         </div>

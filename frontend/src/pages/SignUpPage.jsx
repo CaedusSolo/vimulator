@@ -61,17 +61,17 @@ function SignUpPage() {
       <ToastContainer />
       <h2 className="text-center mt-4 mb-4">Sign Up</h2>
       <form onSubmit={handleFormSubmit}>
-        <div className="form-group mb-2">
+        <div className="form-group mb-4">
           <label htmlFor="email" className="form-label">Email address</label>
           <input type="email" className="form-control" id="email" value={email} onChange={handleEmailChange} />
         </div>
 
-        <div className="form-group mb-2">
+        <div className="form-group mb-4">
           <label htmlFor="password" className="form-label">Password</label>
           <input className="form-control" type="password" name="password" value={password} id="password" minLength={8} onChange={handlePasswordChange} />
         </div>
 
-        <div className="form-group mb-2">
+        <div className="form-group mb-4">
           <label htmlFor="confirm-password" className="form-label">Confirm Password</label>
           <input className="form-control" type="password" name="confirm-password" value={confirmPassword} id="confirm-password" minLength={8} onChange={handleConfirmPasswordChange} />
         </div>
