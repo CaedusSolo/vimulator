@@ -63,6 +63,12 @@ function GameBoard() {
     checkCollision();
   }, [cursorRow, cursorColumn]);
 
+  useEffect(() => {
+    if (gameOver) {
+      saveScoreOnGameOver()
+    }
+  }, [gameOver])
+
   function handleKeyDown(e) {
     if (gameOver) return
     const key = e.key;
@@ -127,6 +133,11 @@ function GameBoard() {
     setTargetColumn(Math.floor(Math.random() * 37));
   }
 
+  async function saveScoreOnGameOver() {
+    const response = await saveScore(score)
+
+  }
+
   function restartGame() {
     setGameOver(false)
     setScore(0)
@@ -153,11 +164,11 @@ function GameBoard() {
   return (
     <>
       <h2 className="text-center">Vimulator: Get to the X!</h2>
-      {!gameOver &&       
-      <>
-        <h4 className="text-center">Score: {score}</h4>
-        <h5 className="text-center">Time Left: {timeLeft}s </h5>
-      </> 
+      {!gameOver &&
+        <>
+          <h4 className="text-center">Score: {score}</h4>
+          <h5 className="text-center">Time Left: {timeLeft}s </h5>
+        </>
       }
       {gameOver && (
         <>
@@ -166,23 +177,23 @@ function GameBoard() {
           <button className="btn btn-primary mx-auto mb-2" onClick={restartGame}>Play Again</button>
         </>
       )}
-        <div className="game-board">
-          <div
-            className="cursor"
-            style={{
-              display: cursorVisible ? 'block' : 'none',
-              gridRowStart: cursorRow + 1,
-              gridColumnStart: cursorColumn + 1,
-            }}
-          >
-            &nbsp;
-          </div>
-          <i className="fa-solid fa-x target"
-            style={{
-              gridRowStart: targetRow + 1,
-              gridColumnStart: targetColumn + 1
-            }}
-          ></i>
+      <div className="game-board">
+        <div
+          className="cursor"
+          style={{
+            display: cursorVisible ? 'block' : 'none',
+            gridRowStart: cursorRow + 1,
+            gridColumnStart: cursorColumn + 1,
+          }}
+        >
+          &nbsp;
+        </div>
+        <i className="fa-solid fa-x target"
+          style={{
+            gridRowStart: targetRow + 1,
+            gridColumnStart: targetColumn + 1
+          }}
+        ></i>
       </div>
     </>
   )

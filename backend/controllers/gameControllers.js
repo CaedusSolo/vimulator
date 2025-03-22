@@ -3,7 +3,7 @@ import supabase from '../config/supabase.js'
 const saveScore = async (req, res) => {
   const { score } = req.body
 
-  const { data: { user } } = supabase.auth.getUser()
+  const { data: { user } } = await supabase.auth.getUser()
 
   const { error } = await supabase.from('scores').insert({
     user_id: user.id,
