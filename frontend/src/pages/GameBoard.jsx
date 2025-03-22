@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
+import { saveScore, getHighScore } from '../api/gameApi.js';
 
 function GameBoard() {
   const [cursorVisible, setCursorVisible] = useState(true);
@@ -6,14 +7,44 @@ function GameBoard() {
   const [cursorColumn, setCursorColumn] = useState(0);
   const [targetRow, setTargetRow] = useState(Math.floor(Math.random() * 12));
   const [targetColumn, setTargetColumn] = useState(Math.floor(Math.random() * 37));
+  const [timeLeft, setTimeLeft] = useState(60)
+  const [gameOver, setGameOver] = useState(false)
+  const timerId = useRef(null)
+  const [score, setScore] = useState(0)
+  const [highScore, setHighScore] = useState(null)
+
+  useEffect(() => {
+    async function fetchHighScore() {
+      const score = await getHighScore()
+      console.log(score)
+      setHighScore(score)
+    }
+    fetchHighScore()
+  }, [])
 
   useEffect(() => {
     resetChallenge();
     const interval = setInterval(() => {
       setCursorVisible((prevState) => !prevState);
     }, 550);
-    return () => clearInterval(interval);
+
+    timerId.current = setInterval(() => {
+      setTimeLeft((prevTime) => {
+        if (prevTime <= 1) {
+          clearInterval(timerId.current)
+          setGameOver(true)
+          return 0
+        }
+        return prevTime - 1
+      })
+    }, 1000)
+
+    return () => {
+      clearInterval(interval)
+      clearInterval(timerId.current)
+    };
   }, []);
+
 
   useEffect(() => {
     document.addEventListener('keydown', handleKeyDown);
@@ -28,8 +59,6 @@ function GameBoard() {
       cursor.style.gridRowStart = cursorRow + 1;
       cursor.style.gridColumnStart = cursorColumn + 1;
     }
-    console.log(`Cursor Row: ${cursorRow}`)
-    console.log(`Cursor Column: ${cursorColumn}`)
   }, [cursorRow, cursorColumn]);
 
   useEffect(() => {
@@ -38,15 +67,20 @@ function GameBoard() {
       target.style.gridRowStart = targetRow + 1;
       target.style.gridColumnStart = targetColumn + 1;
     }
-    console.log(`Target Row: ${targetRow}`)
-    console.log(`Target Column: ${targetColumn}`)
   }, [targetRow, targetColumn]);
 
   useEffect(() => {
     checkCollision();
   }, [cursorRow, cursorColumn]);
 
+  useEffect(() => {
+    if (gameOver) {
+      saveScoreOnGameOver()
+    }
+  }, [gameOver])
+
   function handleKeyDown(e) {
+    if (gameOver) return
     const key = e.key;
 
     if (key === 'h') {
@@ -97,8 +131,9 @@ function GameBoard() {
   }
 
   function checkCollision() {
+    if (gameOver) return
     if (cursorRow === targetRow && cursorColumn === targetColumn) {
-      console.log("Collided! Resetting challenge")
+      setScore(prevScore => prevScore + 1)
       resetChallenge();
     }
   }
@@ -108,28 +143,73 @@ function GameBoard() {
     setTargetColumn(Math.floor(Math.random() * 37));
   }
 
+  async function saveScoreOnGameOver() {
+    const response = await saveScore(score)
+
+    if (score > highScore) {
+      const newHighScore = await getHighScore()
+      setHighScore(newHighScore)
+    }
+
+  }
+
+  function restartGame() {
+    setGameOver(false)
+    setScore(0)
+    setTimeLeft(60)
+    setCursorColumn(0)
+    setCursorRow(0)
+    resetChallenge()
+
+    if (timerId.current) {
+      clearInterval(timerId.current)
+    }
+    timerId.current = setInterval(() => {
+      setTimeLeft((prevTime) => {
+        if (prevTime <= 1) {
+          clearInterval(timerId.current)
+          setGameOver(true)
+          return 0
+        }
+        return prevTime - 1
+      })
+    }, 1000)
+  }
+
   return (
     <>
-      <h2 className="text-center">Vimulator</h2>
-      <h2 className="text-center">Get to the X !</h2>
-
-        <div className="game-board">
-          <div
-            className="cursor"
-            style={{
-              display: cursorVisible ? 'block' : 'none',
-              gridRowStart: cursorRow + 1,
-              gridColumnStart: cursorColumn + 1,
-            }}
-          >
-            &nbsp;
-          </div>
-          <i className="fa-solid fa-x target"
-            style={{
-              gridRowStart: targetRow + 1,
-              gridColumnStart: targetColumn + 1
-            }}
-          ></i>
+      <h2 className="text-center">Vimulator: Get to the X!</h2>
+      {!gameOver &&
+        <>
+          <h4 className="text-center">Score: {score}</h4>
+          <h5 className="text-center">Time Left: {timeLeft}s </h5>
+        </>
+      }
+      {gameOver && (
+        <>
+          <h3 className="text-center">Game Over!</h3>
+          <h4 className="text-center">Final score: {score}</h4>
+          <button className="btn btn-primary mx-auto mb-2" onClick={restartGame}>Play Again</button>
+        </>
+      )}
+      <h4 className="text-center">High Score: {highScore === null ? "Loading..." : highScore}</h4>
+      <div className="game-board">
+        <div
+          className="cursor"
+          style={{
+            display: cursorVisible ? 'block' : 'none',
+            gridRowStart: cursorRow + 1,
+            gridColumnStart: cursorColumn + 1,
+          }}
+        >
+          &nbsp;
+        </div>
+        <i className="fa-solid fa-x target"
+          style={{
+            gridRowStart: targetRow + 1,
+            gridColumnStart: targetColumn + 1
+          }}
+        ></i>
       </div>
     </>
   )
