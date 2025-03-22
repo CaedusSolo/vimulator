@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react'
-import { saveScore } from '../api/gameApi.js';
+import { saveScore, getHighScore } from '../api/gameApi.js';
 
 function GameBoard() {
   const [cursorVisible, setCursorVisible] = useState(true);
@@ -11,6 +11,16 @@ function GameBoard() {
   const [gameOver, setGameOver] = useState(false)
   const timerId = useRef(null)
   const [score, setScore] = useState(0)
+  const [highScore, setHighScore] = useState(null)
+
+  useEffect(() => {
+    async function fetchHighScore() {
+      const score = await getHighScore()
+      console.log(score)
+      setHighScore(score)
+    }
+    fetchHighScore()
+  }, [])
 
   useEffect(() => {
     resetChallenge();
@@ -136,6 +146,11 @@ function GameBoard() {
   async function saveScoreOnGameOver() {
     const response = await saveScore(score)
 
+    if (score > highScore) {
+      const newHighScore = await getHighScore()
+      setHighScore(newHighScore)
+    }
+
   }
 
   function restartGame() {
@@ -177,6 +192,7 @@ function GameBoard() {
           <button className="btn btn-primary mx-auto mb-2" onClick={restartGame}>Play Again</button>
         </>
       )}
+      <h4 className="text-center">High Score: {highScore === null ? "Loading..." : highScore}</h4>
       <div className="game-board">
         <div
           className="cursor"
