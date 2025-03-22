@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { saveScore } from '../api/gameApi.js';
 
 function GameBoard() {
@@ -7,6 +7,9 @@ function GameBoard() {
   const [cursorColumn, setCursorColumn] = useState(0);
   const [targetRow, setTargetRow] = useState(Math.floor(Math.random() * 12));
   const [targetColumn, setTargetColumn] = useState(Math.floor(Math.random() * 37));
+  const [timeLeft, setTimeLeft] = useState(60)
+  const [gameOver, setGameOver] = useState(false)
+  const timerId = useRef(null)
   const [score, setScore] = useState(0)
 
   useEffect(() => {
@@ -14,8 +17,24 @@ function GameBoard() {
     const interval = setInterval(() => {
       setCursorVisible((prevState) => !prevState);
     }, 550);
-    return () => clearInterval(interval);
+
+    timerId.current = setInterval(() => {
+      setTimeLeft((prevTime) => {
+        if (prevTime <= 1) {
+          clearInterval(timerId.current)
+          setGameOver(true)
+          return 0
+        }
+        return prevTime - 1
+      })
+    }, 1000)
+
+    return () => {
+      clearInterval(interval)
+      clearInterval(timerId.current)
+    };
   }, []);
+
 
   useEffect(() => {
     document.addEventListener('keydown', handleKeyDown);
@@ -45,6 +64,7 @@ function GameBoard() {
   }, [cursorRow, cursorColumn]);
 
   function handleKeyDown(e) {
+    if (gameOver) return
     const key = e.key;
 
     if (key === 'h') {
@@ -95,6 +115,7 @@ function GameBoard() {
   }
 
   function checkCollision() {
+    if (gameOver) return
     if (cursorRow === targetRow && cursorColumn === targetColumn) {
       setScore(prevScore => prevScore + 1)
       resetChallenge();
@@ -106,11 +127,45 @@ function GameBoard() {
     setTargetColumn(Math.floor(Math.random() * 37));
   }
 
+  function restartGame() {
+    setGameOver(false)
+    setScore(0)
+    setTimeLeft(60)
+    setCursorColumn(0)
+    setCursorRow(0)
+    resetChallenge()
+
+    if (timerId.current) {
+      clearInterval(timerId.current)
+    }
+    timerId.current = setInterval(() => {
+      setTimeLeft((prevTime) => {
+        if (prevTime <= 1) {
+          clearInterval(timerId.current)
+          setGameOver(true)
+          return 0
+        }
+        return prevTime - 1
+      })
+    }, 1000)
+  }
+
   return (
     <>
-      <h2 className="text-center">Vimulator</h2>
-      <h2 className="text-center">Get to the X !</h2>
-      <h4 className="text-center">Score: {score}</h4>
+      <h2 className="text-center">Vimulator: Get to the X!</h2>
+      {!gameOver &&       
+      <>
+        <h4 className="text-center">Score: {score}</h4>
+        <h5 className="text-center">Time Left: {timeLeft}s </h5>
+      </> 
+      }
+      {gameOver && (
+        <>
+          <h3 className="text-center">Game Over!</h3>
+          <h4 className="text-center">Final score: {score}</h4>
+          <button className="btn btn-primary mx-auto mb-2" onClick={restartGame}>Play Again</button>
+        </>
+      )}
         <div className="game-board">
           <div
             className="cursor"
