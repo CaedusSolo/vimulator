@@ -1,7 +1,7 @@
 import axios from "axios";
 import "dotenv/config"
 
-const API_BASE_URL = `${process.env.VITE_API_BASE_URL}/game`
+const API_BASE_URL = `${import.meta.env.VITE_API_BASE_URL}/game`
 
 async function saveScore(score) {
   try {

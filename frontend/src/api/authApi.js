@@ -1,7 +1,8 @@
 import axios from 'axios'
 import "dotenv/config"
 
-const API_BASE_URL = `${process.env.VITE_API_BASE_URL}/auth`
+
+const API_BASE_URL = `${import.meta.env.VITE_API_BASE_URL}/auth`
 
 async function login(email, password) {
   try {
