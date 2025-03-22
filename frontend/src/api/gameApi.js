@@ -1,6 +1,7 @@
 import axios from "axios";
+import "dotenv/config"
 
-const API_BASE_URL = "http://localhost:5000/game"
+const API_BASE_URL = `${process.env.API_BASE_URL}/game`
 
 async function saveScore(score) {
   try {
