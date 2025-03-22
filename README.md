@@ -1,6 +1,29 @@
-Web-based minigame to practice basic Vim commands, built with React.
+Web-based minigame to practice basic Vim commands.
 
 Try out the minigame here: https://vimulator.netlify.app/
 
-## Update
-Currently in the process of adding more features to the site
+## Tech Stack
+Frontend: React
+
+Backend: Express
+
+Database: Supabase
+
+
+## How to Run
+1. Clone the repo.
+2. Inside the frontend folder, run:
+   
+   `npm install`
+   
+   `npm run dev`
+3. Inside the backend folder, run:
+
+   `npm install`
+
+   `npm install --save-dev nodemon`
+   
+   `npm run dev`
+
+## Contributions 
+Contributions are welcome.
